@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for character encoding and responsive viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShelterBNB</title>
+    <!-- External fonts and stylesheets -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Homepage.css">
+</head>
+<body>
+    <!-- Header section with title and login button -->
+    <div class="header">
+        <h1>ShelterBNB</h1>
+        <button class="login-button" onclick="openModal()">Shelter Login</button>
+    </div>
+
+    <!-- Modal for shelter registration -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h2>Shelter Registration</h2>
+            <form id="shelterForm" onsubmit="addShelter(event)">
+                <!-- Form fields for shelter registration -->
+                <div class="form-group">
+                    <label for="shelterName">Shelter Name:</label>
+                    <input type="text" id="shelterName" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Create Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="beds">Available Beds:</label>
+                    <input type="number" id="beds" required>
+                </div>
+                <button type="submit" class="submit-btn">Register Shelter</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Help text for users -->
+    <div class="help-text">
+        Scroll down to see available shelters near you
+    </div>
+
+    <!-- Grid container for shelter listings -->
+    <div class="shelter-grid" id="shelterGrid">
+        <!-- Example shelter listing with map integration -->
+        <a href="https://www.google.com/maps/dir/?api=1&destination=1960+Kimball+Ct+Orleans+ON+K1C+7C1" target="_blank" class="shelter-box">
+            <h2>Christian Horizons</h2>
+            <div class="shelter-info">📍 1960 Kimball Ct, Orléans, ON K1C 7C1</div>
+            <div class="shelter-info">📞 (613) 837-6571</div>
+            <iframe class="map-container" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2799.5374084009387!2d-75.5047893!3d45.4671675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cce1181c45e5a7d%3A0x4b5b7d604d5e3d96!2s1960%20Kimball%20Ct%2C%20Orl%C3%A9ans%2C%20ON%20K1C%207C1!5e0!3m2!1sen!2sca!4v1642955416000!5m2!1sen!2sca"
+                style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+            <div class="availability">10 beds available</div>
+        </a>
+    </div>
+
+    <!-- Emergency help button and chatbot -->
+    <button class="emergency-button" onclick="toggleChatbot()">
+        Emergency Help
+    </button>
+
+    <!-- Chatbot interface -->
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header">
+            <span>Emergency Assistant</span>
+            <button onclick="toggleChatbot()" style="background: none; border: none; color: white; cursor: pointer;">×</button>
+        </div>
+        <div class="chatbot-messages" id="chatMessages">
+            <!-- Messages will be inserted here -->
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="userInput" placeholder="Type your message..." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to open the shelter registration modal
+        function openModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+    
+        // Function to handle shelter registration form submission
+        function addShelter(event) {
+            event.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('shelterName').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const beds = document.getElementById('beds').value;
+    
+            // Create new shelter listing
+            const shelterBox = document.createElement('a');
+            shelterBox.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+            shelterBox.target = '_blank';
+            shelterBox.className = 'shelter-box';
+            
+            // Create shelter content with Google Maps integration
+            const encodedAddress = encodeURIComponent(address);
+            shelterBox.innerHTML = `
+                <h2>${name}</h2>
+                <div class="shelter-info">📍 ${address}</div>
+                <div class="shelter-info">📞 ${phone}</div>
+                <iframe class="map-container" 
+                    src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodedAddress}"
+                    style="border:0;" allowfullscreen="" loading="lazy">
+                </iframe>
+                <div class="availability">${beds} beds available</div>
+            `;
+    
+            // Add new shelter to grid and reset form
+            document.getElementById('shelterGrid').appendChild(shelterBox);
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('shelterForm').reset();
+        }
+    
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    
+        // Function to toggle chatbot visibility
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbot');
+            const currentDisplay = chatbot.style.display;
+            chatbot.style.display = currentDisplay === 'none' || currentDisplay === '' ? 'block' : 'none';
+            
+            // Display initial message when chatbot opens
+            if(chatbot.style.display === 'block') {
+                const messages = document.getElementById('chatMessages');
+                messages.innerHTML = `
+                    <div style="margin-bottom: 10px;">
+                        <strong>Assistant:</strong> Hello! I'm here to help you with any emergency situation. 
+                        What kind of help do you need?
+                    </div>
+                `;
+            }
+        }
+    
+        // Function to handle sending messages in chatbot
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value;
+            if(message.trim() === '') return;
+    
+            const messages = document.getElementById('chatMessages');
+            
+            // Display user message
+            messages.innerHTML += `
+                <div style="margin-bottom: 10px; text-align: right;">
+                    <strong>You:</strong> ${message}
+                </div>
+            `;
+    
+            // Display bot response with delay
+            setTimeout(() => {
+                messages.innerHTML += `
+                    <div style="margin-bottom: 10px;">
+                        <strong>Assistant:</strong> I understand you need help. Please call emergency services at 911 immediately if this is a life-threatening situation. 
+                        You can also find available shelters listed above. Would you like me to help you find the nearest shelter?
+                    </div>
+                `;
+                messages.scrollTop = messages.scrollHeight;
+            }, 1000);
+    
+            // Clear input and scroll to bottom
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
+        }
+    </script>
+    
+</body>
+</html>

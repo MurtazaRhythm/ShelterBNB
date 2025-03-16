@@ -1,0 +1,36 @@
+- Homeless shelter finder with capacity avaible
+
+
+- we use google maps api to find the closet shelter to the client and show if spaces are avaible.
+
+
+
+- to simulate the shelter capacities we will for now, make up the spaces to demo how our website would work.
+
+
+
+
+- for database we will make a login for shelters, where they can see if there spaces avaible at their own shelters. they can adjust how much they are filled. we will then display that info on the website. 
+
+
+
+
+LAYOUT
+
+NAME: ShelterBNB.com
+	POpoutat1am.ca
+	Lejamesshelters.ca
+	LeSheltersbron.ca
+	sigmashelters.ca
+	Skibidishelters.ca
+
+- Homepage: 
+	-->> swipe down website, where there will be boxed displays with the homeless shelters, their capacity, and location. 
+	--> we also would ask to have the location of the client or just have them type in their current location. 
+
+
+-ABOUT US: --> PIC OF ME AND BURAK. and talk about the project, mention how both me and burak illegal immigrants and we homeless at some point. 
+
+--> make using FIGMA(About us page)
+
+
