@@ -1,0 +1,410 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <!-- Meta tags for character encoding and responsive viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShelterBNB</title>
+    <!-- External fonts and stylesheets -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Style.css">
+
+</head>
+<body>
+    <!-- Header section with title and login button -->
+    <div class="header">
+        <h1>ShelterBNB</h1>
+        <button class="login-button" onclick="openModal()">Shelter Login</button>
+    </div>
+
+    <!-- Modal for shelter registration/login -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h2>Shelter Login/Registration</h2>
+            <form id="shelterForm" onsubmit="handleShelterForm(event)">
+                <!-- Form fields for shelter registration -->
+                <div class="form-group">
+                    <label for="shelterName">Shelter Name:</label>
+                    <input type="text" id="shelterName" required pattern="[A-Za-z0-9\s\-]{3,50}" title="3-50 characters, letters, numbers, spaces and hyphens only">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" required pattern=".{10,100}" title="Address must be between 10 and 100 characters">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" required pattern="^\(\d{3}\)\s\d{3}-\d{4}$" title="Format: (XXX) XXX-XXXX">
+                </div>
+                <div class="form-group">
+                    <label for="beds">Available Beds:</label>
+                    <input type="number" id="beds" required min="0" max="1000">
+                </div>
+                <div id="formError" class="error-message" style="color: red; display: none;"></div>
+                <button type="submit" class="submit-btn">Login/Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Help text for users -->
+    <div class="help-text">
+        <h3>Available Shelters Near You</h3>
+        <p>Click on any shelter to get directions</p>
+    </div>
+
+    <!-- Grid container for shelter listings -->
+    <div class="shelter-grid" id="shelterGrid">
+        <!-- Example shelter listing with map integration -->
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=1960+Kimball+Ct+Orleans+ON+K1C+7C1" target="_blank" class="shelter-link">
+                <h2>Christian Horizons</h2>
+                <div class="shelter-info">📍 1960 Kimball Ct, Orléans, ON K1C 7C1</div>
+                <div class="shelter-info">📞 (613) 837-6571</div>
+                <div class="availability">10 beds available</div>
+            </a>
+        </div>
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=233+Murray+St+Ottawa+ON+K1N+5M9" target="_blank" class="shelter-link">
+                <h2>Shepherds of Good Hope</h2>
+                <div class="shelter-info">📍 233 Murray St Ottawa ON K1N 5M9</div>
+                <div class="shelter-info">📞 (613) 789-8210</div>
+                <div class="availability">25 beds available</div>
+            </a>
+        </div>
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=35+Waller+St+Ottawa+ON+K1N+7G4" target="_blank" class="shelter-link">
+                <h2>Ottawa Mission</h2>
+                <div class="shelter-info">📍 35 Waller St Ottawa ON K1N 7G4</div>
+                <div class="shelter-info">📞 (613) 234-1144</div>
+                <div class="availability">40 beds available</div>
+            </a>
+        </div>
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=171+George+St+Ottawa+ON+K1N+5W5" target="_blank" class="shelter-link">
+                <h2>Salvation Army Ottawa Booth Centre</h2>
+                <div class="shelter-info">📍 171 George St Ottawa ON K1N 5W5</div>
+                <div class="shelter-info">📞 (613) 241-1573</div>
+                <div class="availability">30 beds available</div>
+            </a>
+        </div>
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=147+Besserer+St+Ottawa+ON+K1N+6A7" target="_blank" class="shelter-link">
+                <h2>Youth Services Bureau</h2>
+                <div class="shelter-info">📍 147 Besserer St Ottawa ON K1N 6A7</div>
+                <div class="shelter-info">📞 (613) 729-1000</div>
+                <div class="availability">15 beds available</div>
+            </a>
+        </div>
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=314+Booth+St+Ottawa+ON+K1R+7K2" target="_blank" class="shelter-link">
+                <h2>Cornerstone Housing for Women</h2>
+                <div class="shelter-info">📍 314 Booth St Ottawa ON K1R 7K2</div>
+                <div class="shelter-info">📞 (613) 254-6584</div>
+                <div class="availability">20 beds available</div>
+            </a>
+        </div>
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=393+Piccadilly+Ave+Ottawa+ON+K1Y+0H3" target="_blank" class="shelter-link">
+                <h2>Daybreak Housing</h2>
+                <div class="shelter-info">📍 393 Piccadilly Ave Ottawa ON K1Y 0H3</div>
+                <div class="shelter-info">📞 (613) 236-8070</div>
+                <div class="availability">35 beds available</div>
+            </a>
+        </div>
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=171+George+St+Ottawa+ON+K1N+5W5" target="_blank" class="shelter-link">
+                <h2>Booth Transitional House</h2>
+                <div class="shelter-info">📍 171 George St Ottawa ON K1N 5W5</div>
+                <div class="shelter-info">📞 (613) 241-1573</div>
+                <div class="availability">25 beds available</div>
+            </a>
+        </div>
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=507+Bank+St+Ottawa+ON+K2P+1Z4" target="_blank" class="shelter-link">
+                <h2>Centre 507 Drop-In</h2>
+                <div class="shelter-info">📍 507 Bank St Ottawa ON K2P 1Z4</div>
+                <div class="shelter-info">📞 (613) 233-5626</div>
+                <div class="availability">15 beds available</div>
+            </a>
+        </div>
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=150+Gloucester+St+Ottawa+ON+K2P+0A6" target="_blank" class="shelter-link">
+                <h2>Operation Come Home</h2>
+                <div class="shelter-info">📍 150 Gloucester St Ottawa ON K2P 0A6</div>
+                <div class="shelter-info">📞 (613) 230-4663</div>
+                <div class="availability">20 beds available</div>
+            </a>
+        </div>
+        <div class="shelter-box">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=65+Harvey+St+Ottawa+ON+K1S+0A8" target="_blank" class="shelter-link">
+                <h2>Aboriginal Youth Non-Profit Housing</h2>
+                <div class="shelter-info">📍 65 Harvey St Ottawa ON K1S 0A8</div>
+                <div class="shelter-info">📞 (613) 233-0672</div>
+                <div class="availability">15 beds available</div>
+            </a>
+        </div>
+    </div>
+    <script src="App.js"></script>
+
+    <!-- Emergency help button and chatbot -->
+    <button class="emergency-button" onclick="toggleChatbot()">
+        <span>🆘</span> Emergency Help
+    </button>
+
+    <!-- Chatbot interface -->
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header">
+            <span>🤝 Emergency Assistant</span>
+            <button onclick="toggleChatbot()" class="close-btn">×</button>
+        </div>
+        <div class="chatbot-messages" id="chatMessages">
+            <!-- Messages will be inserted here -->
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="userInput" placeholder="Type your message..." onkeypress="if(event.key === 'Enter') sendMessage()">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to sanitize input
+        function sanitizeInput(input) {
+            return input.replace(/[<>]/g, '');
+        }
+
+        // Function to validate phone number format
+        function formatPhoneNumber(input) {
+            const cleaned = input.replace(/\D/g, '');
+            const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+            if (match) {
+                return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+            }
+            return null;
+        }
+
+        // Function to open the shelter registration modal
+        function openModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+            document.getElementById('formError').style.display = 'none';
+            
+            // Check if there's saved data for this shelter
+            const savedShelters = JSON.parse(localStorage.getItem('shelters') || '{}');
+            const shelterName = document.getElementById('shelterName').value;
+            
+            if (savedShelters[shelterName]) {
+                const shelter = savedShelters[shelterName];
+                // Pre-fill the form with saved data
+                document.getElementById('address').value = shelter.address;
+                document.getElementById('phone').value = shelter.phone;
+                document.getElementById('beds').value = shelter.beds;
+            }
+        }
+    
+        // Function to handle shelter form submission (both login and registration)
+        function handleShelterForm(event) {
+            event.preventDefault();
+            
+            // Get and sanitize form values
+            const name = sanitizeInput(document.getElementById('shelterName').value.trim());
+            const password = document.getElementById('password').value;
+            const address = sanitizeInput(document.getElementById('address').value.trim());
+            const phone = document.getElementById('phone').value.trim();
+            const beds = parseInt(document.getElementById('beds').value);
+
+            const errorDiv = document.getElementById('formError');
+
+            // Validate phone number format
+            const formattedPhone = formatPhoneNumber(phone);
+            if (!formattedPhone) {
+                errorDiv.textContent = "Invalid phone number format. Please use (XXX) XXX-XXXX";
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            // Validate beds
+            if (isNaN(beds) || beds < 0 || beds > 1000) {
+                errorDiv.textContent = "Available beds must be between 0 and 1000";
+                errorDiv.style.display = 'block';
+                return;
+            }
+    
+            // Get existing shelters from localStorage
+            const savedShelters = JSON.parse(localStorage.getItem('shelters') || '{}');
+            
+            // Check if shelter exists and validate password for login
+            if (savedShelters[name] && savedShelters[name].password !== password) {
+                errorDiv.textContent = "Invalid password for existing shelter";
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            // Save/update shelter information
+            savedShelters[name] = {
+                password: password,
+                address: address,
+                phone: formattedPhone,
+                beds: beds
+            };
+            
+            try {
+                // Save back to localStorage
+                localStorage.setItem('shelters', JSON.stringify(savedShelters));
+        
+                // Update or create shelter listing in the grid
+                updateShelterListing(name, address, formattedPhone, beds);
+                
+                // Close modal and reset form
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('shelterForm').reset();
+                errorDiv.style.display = 'none';
+            } catch (error) {
+                errorDiv.textContent = "Error saving shelter data. Please try again.";
+                errorDiv.style.display = 'block';
+            }
+        }
+        
+        // Function to update shelter listing in the grid
+        function updateShelterListing(name, address, phone, beds) {
+            // Check if shelter already exists in grid
+            let existingShelter = Array.from(document.querySelectorAll('.shelter-box h2'))
+                .find(h2 => h2.textContent === name)?.parentElement;
+            
+            const updateBedsHtml = `
+                <div class="bed-update" onclick="event.stopPropagation()">
+                    <div class="bed-control">
+                        <button onclick="adjustBeds('${name}', -1)" class="bed-btn">-</button>
+                        <input type="number" class="bed-input" value="${beds}" min="0" max="1000">
+                        <button onclick="adjustBeds('${name}', 1)" class="bed-btn">+</button>
+                    </div>
+                    <button onclick="updateBeds('${name}', this.previousElementSibling.querySelector('.bed-input'))" class="update-btn">Update Beds</button>
+                </div>
+            `;
+            
+            if (existingShelter) {
+                // Update existing shelter box
+                const shelterContent = `
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}" target="_blank" class="shelter-link">
+                        <h2>${name}</h2>
+                        <div class="shelter-info">📍 ${address}</div>
+                        <div class="shelter-info">📞 ${phone}</div>
+                        <div class="availability">${beds} beds available</div>
+                    </a>
+                    ${updateBedsHtml}
+                `;
+                existingShelter.innerHTML = shelterContent;
+            } else {
+                // Create new shelter box
+                const shelterBox = document.createElement('div');
+                shelterBox.className = 'shelter-box';
+                shelterBox.innerHTML = `
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}" target="_blank" class="shelter-link">
+                        <h2>${name}</h2>
+                        <div class="shelter-info">📍 ${address}</div>
+                        <div class="shelter-info">📞 ${phone}</div>
+                        <div class="availability">${beds} beds available</div>
+                    </a>
+                    ${updateBedsHtml}
+                `;
+                document.getElementById('shelterGrid').appendChild(shelterBox);
+            }
+        }
+
+        // Function to adjust beds with + and - buttons
+        function adjustBeds(shelterName, change) {
+            const input = event.target.parentElement.querySelector('.bed-input');
+            let newValue = parseInt(input.value) + change;
+            if (newValue >= 0 && newValue <= 1000) {
+                input.value = newValue;
+            }
+        }
+
+        // Function to update beds for a shelter
+        function updateBeds(shelterName, input) {
+            const newBeds = parseInt(input.value);
+            if (isNaN(newBeds) || newBeds < 0 || newBeds > 1000) {
+                alert("Available beds must be between 0 and 1000");
+                return;
+            }
+
+            const savedShelters = JSON.parse(localStorage.getItem('shelters') || '{}');
+            
+            if (savedShelters[shelterName]) {
+                savedShelters[shelterName].beds = newBeds;
+                try {
+                    localStorage.setItem('shelters', JSON.stringify(savedShelters));
+                    
+                    // Update the display
+                    const shelterBox = input.closest('.shelter-box');
+                    const availabilityDiv = shelterBox.querySelector('.availability');
+                    availabilityDiv.textContent = `${newBeds} beds available`;
+                } catch (error) {
+                    alert("Error updating beds. Please try again.");
+                }
+            }
+        }
+    
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                document.getElementById('formError').style.display = 'none';
+                document.getElementById('shelterForm').reset();
+            }
+        }
+    
+        // Function to toggle chatbot visibility
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbot');
+            const currentDisplay = chatbot.style.display;
+            chatbot.style.display = currentDisplay === 'none' || currentDisplay === '' ? 'block' : 'none';
+            
+            // Display initial message when chatbot opens
+            if(chatbot.style.display === 'block') {
+                const messages = document.getElementById('chatMessages');
+                messages.innerHTML = `
+                    <div class="bot-message">
+                        <strong>Assistant:</strong> Hello! I'm here to help you with any emergency situation. 
+                        What kind of help do you need?
+                    </div>
+                `;
+            }
+        }
+    
+        // Function to handle sending messages in chatbot
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = sanitizeInput(input.value.trim());
+            if(message === '') return;
+    
+            const messages = document.getElementById('chatMessages');
+            
+            // Display user message
+            messages.innerHTML += `
+                <div class="user-message">
+                    <strong>You:</strong> ${message}
+                </div>
+            `;
+    
+            // Display bot response with delay
+            setTimeout(() => {
+                messages.innerHTML += `
+                    <div class="bot-message">
+                        <strong>Assistant:</strong> I understand you need help. Please call emergency services at 911 immediately if this is a life-threatening situation. 
+                        You can also find available shelters listed above. Would you like me to help you find the nearest shelter?
+                    </div>
+                `;
+                messages.scrollTop = messages.scrollHeight;
+            }, 1000);
+    
+            // Clear input and scroll to bottom
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
+        }
+    </script>
+    
+</body>
+</html>
